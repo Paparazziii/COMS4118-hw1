@@ -5,7 +5,12 @@ with '=' signs and keep lines to a max of 80 chars long.
 ================================== Q1 start ===================================
 1.  What actions does a kernel perform to context switch between processes?
 
-/* your answer */
+The kernel will save a few register values for the currently-executing process,
+as well as other machine state in the process PCB. Meanwhile, it will restore
+the registers for the soon-to-be-executing process from its kernel stack. By 
+doing so, the OS could ensure that when the return-from-trap instruction is
+finally executed, instead of returning to the process that was running, the 
+system resumes execution of another process.
 
 =================================== Q1 end ====================================
 
@@ -14,7 +19,12 @@ with '=' signs and keep lines to a max of 80 chars long.
 2.  What process state does a process enter immediately after it terminates?
     What is this state for, and when does it leave this state?
 
-/* your answer */
+The process will enter a final state(or zombie state) immediately after it 
+terminates. The state allows other process(usually the parent that created the
+process) to examine the return code of the process and see if it the process
+excuted successfully). The process will be in zombie state until the parent
+process releases the slot in the 'process' table. The parent process will make
+a final call, for example the wait() sys call, and clean up its zombie process.
 
 =================================== Q2 end ====================================
 
