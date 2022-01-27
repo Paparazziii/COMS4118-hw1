@@ -33,7 +33,8 @@ a final call, for example the wait() sys call, and clean up its zombie process.
 3.  What is typeof? Is it a C language keyword, function, or macro? What does
     it do?
 
-/* your answer */
+Typeof is a C language keyword. It acts like the name of a type and specifies 
+a type.
 
 =================================== Q3 end ====================================
 
@@ -41,7 +42,9 @@ a final call, for example the wait() sys call, and clean up its zombie process.
 ================================== Q4 start ===================================
 4.  What is offsetof? Is it a keyword, function, or macro? What does it do?
 
-/* your answer */
+Offsetof is a C library macro. It results in a byte offset of a member to the
+beginning of the structure. The name of the structure is given in type and the
+member is given by member-designator.
 
 =================================== Q4 end ====================================
 
@@ -49,7 +52,8 @@ a final call, for example the wait() sys call, and clean up its zombie process.
 ================================== Q5 start ===================================
 5.  What does the container_of() macro do?
 
-/* your answer */
+The container_of() macro subtracts the offset of the structure's member from
+its address yielding the address of the whole contrainer structure.
 
 =================================== Q5 end ====================================
 
@@ -59,7 +63,9 @@ a final call, for example the wait() sys call, and clean up its zombie process.
     portable across C compilers because it uses GNU-specific language
     extensions. Can you identify what they are?
 
-/* your answer */
+Here it has a braced-group within expression - ({}), and it is a GNU-specific
+extention to C language. The compiler will evaluate the whole block and use the 
+value of the last statement contained in the block.
 
 =================================== Q6 end ====================================
 
@@ -69,6 +75,8 @@ a final call, for example the wait() sys call, and clean up its zombie process.
     __mptr) really necessary? Is it possible to rewrite the macro without it?
     What is the purpose of that 1st line?
 
-/* your answer */
+The first line here is actually not important for the result of the macro. We 
+could still get the same result without the first line. However, it is important
+for type checking purpose. All the compiler cares for here is its type.
 
 =================================== Q7 end ====================================
