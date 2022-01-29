@@ -1,5 +1,6 @@
 #include <linux/module.h>
 #include <linux/printk.h>
+#include <linux/slab.h>
 
 /*
  * Undefine commonly used macros -- DO NOT MODIFY
@@ -30,19 +31,44 @@ void print_pokemon(struct pokemon *p)
 
 /* TODO: declare a single static struct list_head, named pokedex */
 
+struct list_head pokedex = {&pokedex, &pokedex};
+
 void add_pokemon(char *name, int dex_no)
 {
 	/* TODO: write your code here */
+	struct pokemon *new_pokemon;
+	struct list_head *prev = pokedex.prev;
+	new_pokemon = kmalloc(sizeof(*new_pokemon),GFP_KERNEL);
+	strcpy(new_pokemon->name, name);
+	new_pokemon->dex_no = dex_no;
+	pokedex.prev = &new_pokemon->list;
+	new_pokemon->list.next = &pokedex;
+	new_pokemon->list.prev = prev;
+	prev->next = &new_pokemon->list;
+
 }
 
 void print_pokedex(void)
 {
 	/* TODO: write your code here, using print_pokemon() */
+	struct pokemon *curr;
+	const typeof(((struct pokemon *)0)->list) *_mptr = (pokedex.next);
+	for(curr = (struct pokemon *)((char *)_mptr - ((size_t)&((struct pokemon *)0)->list));&curr->list != (&pokedex);curr=(struct pokemon*)((char *)(curr->list.next)-((size_t)&((struct pokemon *)0)->list))){
+	print_pokemon(curr);
+	}
 }
 
 void delete_pokedex(void)
 {
-	/* TODO: write your code here */
+	struct pokemon *del;
+	struct pokemon *next;
+	const typeof(((struct pokemon *)0)->list) *_mptr = (pokedex.next);
+	for(del=(struct pokemon *)((char *)_mptr - ((size_t)&((struct pokemon *)0)->list)), next=(struct pokemon *)((char*)(del->list.next)-((size_t)&((struct pokemon *)0)->list)); &del->list!=(&pokedex);del=next,next=(struct pokemon *)((char *)(next->list.next)-((size_t)&((struct pokemon *)0)->list))){
+	struct pokemon *temp = del;
+	del->list.prev->next = del->list.next;
+	del->list.next->prev = temp->list.prev;	
+	kfree(del);
+	}
 }
 
 int pokedex_nom_init(void)
@@ -66,6 +92,10 @@ void pokedex_nom_exit(void)
 	print_pokedex();
 
 	delete_pokedex();
+
+	printk(KERN_INFO "FINISH REMOVING\n");
+
+	print_pokedex();
 }
 
 module_init( pokedex_nom_init );
