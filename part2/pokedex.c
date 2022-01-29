@@ -1,6 +1,9 @@
 #include <linux/module.h>
 #include <linux/list.h>
 #include <linux/printk.h>
+#include <linux/slab.h>
+
+static LIST_HEAD(pokedex);
 
 struct pokemon {
 	char name[32];
@@ -18,16 +21,33 @@ void print_pokemon(struct pokemon *p)
 void add_pokemon(char *name, int dex_no)
 {
 	/* TODO: write your code here */
+	struct pokemon *new_pokemon;
+	new_pokemon = kmalloc(sizeof(*new_pokemon),GFP_KERNEL);
+	strcpy(new_pokemon->name, name);
+	new_pokemon->dex_no = dex_no;
+	INIT_LIST_HEAD(&new_pokemon->list);
+	list_add_tail(&new_pokemon->list, &pokedex);
 }
 
 void print_pokedex(void)
 {
 	/* TODO: write your code here, using print_pokemon() */
+	struct pokemon *curr;
+
+	list_for_each_entry(curr, &pokedex,list){
+	    print_pokemon(curr);
+	}
 }
 
 void delete_pokedex(void)
 {
 	/* TODO: write your code here */
+	struct pokemon *del;
+	struct pokemon *next;
+	list_for_each_entry_safe(del, next, &pokedex, list){
+	    list_del(&del->list);
+	    kfree(del);
+	}
 }
 
 int pokedex_init(void)
