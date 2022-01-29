@@ -92,10 +92,6 @@ void pokedex_nom_exit(void)
 	print_pokedex();
 
 	delete_pokedex();
-
-	printk(KERN_INFO "FINISH REMOVING\n");
-
-	print_pokedex();
 }
 
 module_init( pokedex_nom_init );
