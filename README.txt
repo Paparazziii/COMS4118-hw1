@@ -20,6 +20,6 @@ Description:
  - Part3: Manipulating linkedlist in C language without using macro,
 	which means I need to understand the source code of each macro I used
 	and transfer that to regular functions in C language.
- - Part4: Using the techniques given by Part2 to print out a process tree with with task_struct;
+ - Part4: Using the techniques given by Part2 to print out a process tree with task_struct;
 	Using rucursion to traverse each level of the tree.
 	The important part here is to count the level for each process in order to form a tree structure.
