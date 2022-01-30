@@ -10,9 +10,6 @@ struct task_struct *root = &init_task;
 
 void printTask(struct task_struct *task, int cur_level){
 	int num_spaces = 4*min(cur_level,20);
-	char ran[] = "abcd";
-	//printk(KERN_INFO "%*c %s", num_spaces, ' ', ran);
-	//printk(KERN_INFO "\_ ")
 	printk(KERN_INFO "%*c\\_ [%d] %s \n", num_spaces, ' ', task->pid, task->comm);
 }
 
